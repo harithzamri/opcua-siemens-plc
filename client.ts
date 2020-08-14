@@ -21,13 +21,13 @@ const connectionStrategy = {
 const options = {
   applicationName: "myClient",
   connectionStrategy: connectionStrategy,
-  securityMode: MessageSecurityMode.SignAndEncrypt,
-  securityPolicy: SecurityPolicy.Basic128Rsa15,
-  end_must_exist: true,
+  securityMode: MessageSecurityMode.None,
+  securityPolicy: SecurityPolicy.None,
+  endpoint_must_exist: true,
 };
 
 const client = OPCUAClient.create(options);
-const endpointUrl = "opc.tcp://CSL-0192:55101";
+const endpointUrl = "opc.tcp://192.168.0.1:4840";
 
 async function main() {
   try {
@@ -37,6 +37,11 @@ async function main() {
   } catch (error) {
     console.log("An error has occured: ", error);
   }
+
+  const session = await client.createSession();
+  console.log("session created !");
+
+  await session.close();
 }
 
 main();
