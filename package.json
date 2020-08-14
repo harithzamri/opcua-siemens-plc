@@ -1,0 +1,15 @@
+{
+  "name": "opcua",
+  "version": "1.0.0",
+  "description": "connect siemens plc which built in opcua",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-opcua": "^2.7.0",
+    "node-opcua-client": "^2.7.0"
+  }
+}
