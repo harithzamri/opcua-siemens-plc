@@ -41,7 +41,12 @@ async function main() {
   const session = await client.createSession();
   console.log("session created !");
 
-  await session.close();
+  const browseResult = await session.browse("RootFolder");
+
+  console.log("references of Root Folder");
+  for (const reference of browseResult.references) {
+    console.log("->", reference.browseName.toString());
+  }
 }
 
 main();
