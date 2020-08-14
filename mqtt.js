@@ -21,6 +21,8 @@ client.on("error", function (err) {
   client.end();
 });
 
-client.subscribe("temperature", function (err) {
-  console.log(err);
+client.subscribe("temperature");
+
+client.on("message", function (topic, message, packet) {
+  console.log(message.toString());
 });
