@@ -41,13 +41,17 @@ async function main() {
   const session = await client.createSession();
   console.log("session created !");
 
-  const browseResult = await session.browse("RootFolder");
+  const browseResult = await session.browse("ns=4;i=1", function (err, result) {
+    console.log(result);
+  });
 
-  console.log("references of Root Folder");
-  for (const reference of browseResult.references) {
-    console.log("->", reference);
-    // console.log(reference);
-  }
+  console.log(browseResult);
+
+  // console.log("references of Root Folder");
+  // for (const reference of browseResult.references) {
+  //   console.log("->", reference.browseName.toString());
+  //   // console.log(reference);
+  // }
   //object -> server interfaces -> server interfaces_1 -> tag -> nodeId
 
   const maxAge = 0;
