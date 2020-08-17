@@ -45,7 +45,7 @@ async function main() {
 
   console.log("references of Root Folder");
   for (const reference of browseResult.references) {
-    console.log("->", reference.toJSON());
+    console.log("->", reference);
     // console.log(reference);
   }
   //object -> server interfaces -> server interfaces_1 -> tag -> nodeId
@@ -59,10 +59,8 @@ async function main() {
   const dataValue = await session.read(nodeToRead, maxAge);
   console.log("value", dataValue.toString());
 
-  // const dataValue2 = await session.readVariableValue(
-  //   "ns=3;s=Scalar_Simulation_Double"
-  // );
-  // console.log(" value = ", dataValue2.toString());
+  const dataValue2 = await session.readVariableValue("ns=4;i=5");
+  console.log(" value = ", dataValue2.toString());
 
   const subscription = ClientSubscription.create(session, {
     requestedPublishingInterval: 1000,
@@ -90,7 +88,7 @@ async function main() {
   // install monitored item
 
   const itemToMonitor: ReadValueIdLike = {
-    nodeId: "ns=3;s=Scalar_Simulation_Float",
+    nodeId: "ns=4;i=5",
     attributeId: AttributeIds.Value,
   };
   const parameters: MonitoringParametersOptions = {
