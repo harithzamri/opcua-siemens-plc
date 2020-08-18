@@ -41,11 +41,12 @@ async function main() {
   const session = await client.createSession();
   console.log("session created !");
 
-  const browseResult = await session.browse("ns=4;i=1", function (err, result) {
-    console.log(result);
-  });
+  const browseResult = await session.browse("i=85");
 
-  console.log(browseResult);
+  for (const reference of browseResult.references) {
+    console.log("   -> ", reference.browseName.toString());
+    console.log("   --->", reference);
+  }
 
   // console.log("references of Root Folder");
   // for (const reference of browseResult.references) {
@@ -84,10 +85,10 @@ async function main() {
     })
     .on("keepalive", function () {
       console.log("keepalive");
-    })
-    .on("terminated", function () {
-      console.log("terminated");
     });
+  // .on("terminated", function () {
+  //   console.log("terminated");
+  // });
 
   // install monitored item
 
@@ -117,8 +118,8 @@ async function main() {
   }
   await timeout(10000);
 
-  console.log("now terminating subscription");
-  await subscription.terminate();
+  // console.log("now terminating subscription");
+  // await subscription.terminate();
 
   const browsePath = makeBrowsePath(
     "RootFolder",
