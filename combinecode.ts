@@ -13,6 +13,15 @@ import {
   DataValue,
 } from "node-opcua";
 
+var mqtt = require("mqtt");
+var url = "wss://m16.cloudmqtt.com";
+const mqttconnection = {
+  protocolId: "MQTT",
+  port: 31588,
+  username: "jhfsrkth",
+  password: "LeA8c8Q7ZPoH",
+};
+
 const connectionStrategy = {
   initialDelay: 1000,
   maxRetry: 1,
@@ -28,6 +37,8 @@ const options = {
 
 const client = OPCUAClient.create(options);
 const endpointUrl = "opc.tcp://192.168.0.1:4840";
+
+var mqttclient = mqtt.connect(url, mqttconnection);
 
 async function main() {
   try {
@@ -111,6 +122,10 @@ async function main() {
 
   monitoredItem.on("changed", (dataValue: DataValue) => {
     console.log(" value has changed : ", dataValue.value.toString());
+
+    mqttclient.on("connect", function (err) {
+      mqttclient.publish("ns=4;i=5", dataValue.value.value.toString());
+    });
   });
 
   // dataValue.value.value
