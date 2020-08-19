@@ -12,7 +12,7 @@ import {
   ClientMonitoredItem,
   DataValue,
 } from "node-opcua";
-
+var async = require("async");
 const connectionStrategy = {
   initialDelay: 1000,
   maxRetry: 1,
@@ -41,12 +41,43 @@ async function main() {
   const session = await client.createSession();
   console.log("session created !");
 
-  const browseResult = await session.browse("i=85");
-
-  for (const reference of browseResult.references) {
-    console.log("   -> ", reference.browseName.toString());
-    console.log("   --->", reference);
+  function read(item) {
+    console.log("item", item);
+    var ns = item.browseName.namespaceIndex;
+    var i = item.nodeId.value;
+    console.log("namespaceIndex =" + ns + "" + "Identifier=" + i + "");
   }
+
+  var opcuaServer_browse = function (item, callback) {
+    session.browse(item, function (err, itemResults) {
+      var buf = [];
+      if (err) {
+        console.log(err);
+        console.log(itemResults);
+        callback(err);
+      } else {
+        async.each(
+          itemResults[0].references,
+          function (elementChild, inner_callback) {
+            session.browse(elementChild, function (element) {
+              buf.push(element);
+              inner_callback();
+            });
+          },
+          function (err) {
+            callback(err, buf);
+          }
+        );
+      }
+    });
+  };
+
+  console.log(opcuaServer_browse.toString());
+
+  // for (const reference of browseResult.references) {
+  //   console.log("   -> ", reference.browseName.toString());
+  //   console.log("   --->", reference);
+  // }
 
   // console.log("references of Root Folder");
   // for (const reference of browseResult.references) {

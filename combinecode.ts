@@ -96,6 +96,7 @@ async function main() {
     })
     .on("keepalive", function () {
       console.log("keepalive");
+      mqttclient.publish("ns=4;i=5", dataValue.value.value.toString());
     });
   // .on("terminated", function () {
   //   console.log("terminated");
@@ -123,9 +124,9 @@ async function main() {
   monitoredItem.on("changed", (dataValue: DataValue) => {
     console.log(" value has changed : ", dataValue.value.toString());
 
-    mqttclient.on("connect", function (err) {
-      mqttclient.publish("ns=4;i=5", dataValue.value.value.toString());
-    });
+    // mqttclient.on("connect", function (err) {
+    //   mqttclient.publish("ns=4;i=5", dataValue.value.value.toString());
+    // });
   });
 
   // dataValue.value.value
