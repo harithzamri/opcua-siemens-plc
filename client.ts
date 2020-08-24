@@ -45,16 +45,22 @@ async function main() {
   function read(item) {
     var ns = item.browseName.namespaceIndex;
     var i = item.nodeId.value;
-    console.log("namespaceIndex =" + ns + "" + "Identifier=" + i + "");
+
+    // console.log("namespaceIndex =" + ns + "" + "Identifier=" + i + "");
+    var child = "ns=" + ns + ";i=" + i;
+    // console.log(child);
+    const test = session.browse(child, function (err, res) {
+      console.log(res.references);
+    });
   }
 
-  const browseResult = await session.browse("i=85").then((res) => {
+  const browseResult = await session.browse("RootFolder").then((res) => {
+    res.references.forEach(read);
     var buf = [];
     for (let index = 0; index < res.references.length; index++) {
       // console.log(res.references[index].browseName.toString());
       buf[index] = res.references[index].browseName.toString();
-      console.log(buf[index]);
-      res.references.forEach(read);
+      // console.log(buf[index]);
     }
   });
 
