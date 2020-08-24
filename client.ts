@@ -43,15 +43,16 @@ async function main() {
   console.log("session created !");
 
   function read(item) {
+    console.log(item);
     var ns = item.browseName.namespaceIndex;
     var i = item.nodeId.value;
 
     // console.log("namespaceIndex =" + ns + "" + "Identifier=" + i + "");
     var child = "ns=" + ns + ";i=" + i;
     // console.log(child);
-    const test = session.browse(child, function (err, res) {
-      console.log(res.references);
-    });
+    // const test = session.browse(child, function (err, res) {
+    //   console.log(res.references);
+    // });
   }
 
   const browseResult = await session.browse("RootFolder").then((res) => {
@@ -60,7 +61,7 @@ async function main() {
     for (let index = 0; index < res.references.length; index++) {
       // console.log(res.references[index].browseName.toString());
       buf[index] = res.references[index].browseName.toString();
-      // console.log(buf[index]);
+      console.log("->", buf[index]);
     }
   });
 
