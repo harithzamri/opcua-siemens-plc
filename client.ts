@@ -13,7 +13,6 @@ import {
   DataValue,
 } from "node-opcua";
 
-var async = require("async");
 const connectionStrategy = {
   initialDelay: 1000,
   maxRetry: 1,

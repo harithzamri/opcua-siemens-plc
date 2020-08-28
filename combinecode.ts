@@ -96,7 +96,7 @@ async function main() {
     })
     .on("keepalive", function () {
       console.log("keepalive");
-      mqttclient.publish("ns=4;i=5", dataValue.value.value.toString());
+      mqttclient.publish("ns=4;i=25", dataValue.value.value.toString());
     });
   // .on("terminated", function () {
   //   console.log("terminated");
@@ -105,7 +105,7 @@ async function main() {
   // install monitored item
 
   const itemToMonitor: ReadValueIdLike = {
-    nodeId: "ns=4;i=5",
+    nodeId: "ns=4;i=25",
     attributeId: AttributeIds.Value,
   };
   const parameters: MonitoringParametersOptions = {
@@ -122,6 +122,7 @@ async function main() {
   );
 
   monitoredItem.on("changed", (dataValue: DataValue) => {
+    mqttclient.publish("ns=4;i=25", dataValue.value.value.toString());
     console.log(" value has changed : ", dataValue.value.toString());
 
     // mqttclient.on("connect", function (err) {
