@@ -1,18 +1,6 @@
-import {
-  OPCUAClient,
-  MessageSecurityMode,
-  SecurityPolicy,
-  AttributeIds,
-  makeBrowsePath,
-  ClientSubscription,
-  TimestampsToReturn,
-  MonitoringParametersOptions,
-  ReadValueIdLike,
-  ClientMonitoredItem,
-  DataValue,
-} from "node-opcua";
+const opcua = require("node-opcua");
 
-var client = new OPCUAClient();
+var client = new opcua.OPCUAClient();
 
 var endpointURL = "opc.tcp://192.168.0.1:4840";
 var the_session = null;
@@ -37,7 +25,7 @@ client.connect(endpointURL, (err) => {
 function testMonitor(id) {
   let count = 0;
 
-  const subscription = ClientSubscription.create(the_session, {
+  const subscription = opcua.ClientSubscription.create(the_session, {
     requestedPublishingInterval: 1000,
     requestedLifetimeCount: 100,
     requestedMaxKeepAliveCount: 10,
@@ -47,7 +35,26 @@ function testMonitor(id) {
   });
 
   let monitoredItem = subscription.monitor(
-    { nodeId: "ns=4;i=5", attributeId: AttributeIds.Value },
-    { samplingInterval: 100, discardOldest: true, queueSize: 1 }
+    {
+      nodeId: opcua.resolveNodeId(id),
+      attributeId: opcua.AttributeIds.Value,
+    },
+    {
+      samplingInterval: 100,
+      discardOldest: true,
+      queueSize: 1,
+    }
   );
+
+  monitoredItem.on("err", function (err) {
+    console.log(err);
+  });
+
+  monitoredItem.on("terminated", function (value) {
+    console.log("terminated", value);
+  });
+
+  monitoredItem.on("change", function (value) {
+    console.log(id, count++);
+  });
 }
