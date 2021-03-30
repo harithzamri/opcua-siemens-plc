@@ -41,7 +41,7 @@ async function main() {
   const session = await client.createSession();
   console.log("session created !");
 
-  function read(item) {
+  function read(item: any) {
     console.log(item);
     var ns = item.browseName.namespaceIndex;
     var i = item.nodeId.value;
@@ -54,15 +54,10 @@ async function main() {
     // });
   }
 
-  const browseResult = await session.browse("RootFolder").then((res) => {
-    res.references.forEach(read);
-    var buf = [];
-    for (let index = 0; index < res.references.length; index++) {
-      // console.log(res.references[index].browseName.toString());
-      buf[index] = res.references[index].browseName.toString();
-      console.log("->", buf[index]);
-    }
-  });
+  const browseResult = await session.browse("RootFolder");
+  for (const reference of browseResult.references ?? []) {
+    console.log(" -> ", reference.browseName.toString());
+  }
 
   // console.log("references of RootFolder :");
   // for (const reference of results.references) {
