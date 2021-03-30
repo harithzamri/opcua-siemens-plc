@@ -147,8 +147,11 @@ async function main() {
   );
 
   const result = await session.translateBrowsePath(browsePath);
-  const productNameNodeId = result.targets[0].targetId;
-  console.log(" Product Name nodeId = ", productNameNodeId.toString());
+
+  if (result.targets) {
+    const productNameNodeId = result.targets[0].targetId;
+    console.log(" Product Name nodeId = ", productNameNodeId.toString());
+  }
 }
 
 main();

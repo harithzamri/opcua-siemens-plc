@@ -54,7 +54,7 @@ async function main() {
 
   const browseResult = await session.browse("i=85");
 
-  for (const reference of browseResult.references) {
+  for (const reference of browseResult.references ?? []) {
     console.log("   -> ", reference.browseName.toString());
     console.log("   --->", reference);
   }
@@ -146,8 +146,10 @@ async function main() {
   );
 
   const result = await session.translateBrowsePath(browsePath);
-  const productNameNodeId = result.targets[0].targetId;
-  console.log(" Product Name nodeId = ", productNameNodeId.toString());
+  if (result.targets) {
+    const productNameNodeId = result.targets[0].targetId;
+    console.log(" Product Name nodeId = ", productNameNodeId.toString());
+  }
 }
 
 main();
